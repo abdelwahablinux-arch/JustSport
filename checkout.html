@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Just Sport Premium Bikes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #777;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --white: #FFFFFF;
+            --charcoal: #1A1A1A;
+            --medium-gray: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--charcoal);
+            background-color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .nav-container {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        /* Main Content */
+        .checkout-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .order-summary {
+                order: -1;
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                margin: 1rem auto;
+                gap: 1rem;
+            }
+        }
+
+        /* Checkout Steps */
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--medium-gray);
+            flex-shrink: 0;
+        }
+
+        .step.active {
+            color: var(--primary);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--medium-gray);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .checkout-steps {
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .step {
+                font-size: 0.9rem;
+            }
+            
+            .step-number {
+                width: 25px;
+                height: 25px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Checkout Sections */
+        .checkout-section {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 480px) {
+            .checkout-section {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            min-height: 48px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .form-control {
+                padding: 0.65rem;
+                font-size: 0.95rem;
+                min-height: 44px;
+            }
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+        }
+
+        .checkbox-group label {
+            font-size: 0.95rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .payment-methods {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+
+        .payment-method {
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: rgba(44, 62, 80, 0.05);
+        }
+
+        .payment-method i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            position: sticky;
+            top: 100px;
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        @media (max-width: 1024px) {
+            .order-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-summary {
+                padding: 1rem;
+            }
+        }
+
+        .order-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        .order-item-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .order-item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .order-item-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .order-totals {
+            border-top: 2px solid var(--light);
+            padding-top: 1rem;
+        }
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            border-top: 2px solid var(--light);
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .order-item {
+                padding: 0.75rem 0;
+            }
+            
+            .order-item-image {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .order-total {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: block;
+            width: 100%;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            color: var(--secondary);
+            background: rgba(44, 62, 80, 0.05);
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.95rem;
+                min-height: 48px;
+            }
+            
+            .btn-back {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Shipping Options */
+        .shipping-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .shipping-option {
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .shipping-option.selected {
+            border-color: var(--primary);
+            background: rgba(44, 62, 80, 0.05);
+        }
+
+        .shipping-option-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .shipping-option-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Empty Cart State */
+        .empty-cart {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-cart i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--medium-gray);
+        }
+
+        @media (max-width: 480px) {
+            .empty-cart {
+                padding: 1.5rem;
+            }
+            
+            .empty-cart i {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 2rem 5%;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: var(--light);
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 1.5rem 5%;
+                margin-top: 3rem;
+            }
+            
+            .footer-content p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Bike-specific styling */
+        .bike-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .bike-feature i {
+            color: var(--secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Shipping Calculation Info */
+        .shipping-info {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .shipping-info h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .shipping-info ul {
+            padding-left: 1.5rem;
+        }
+
+        .shipping-info li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Enhanced Shipping Info Styles */
+        .shipping-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .shipping-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .shipping-type {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .shipping-type h5 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .shipping-type ul {
+            margin: 0;
+            padding-left: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .shipping-note {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .shipping-note i {
+            color: var(--secondary);
+            margin-top: 0.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-bicycle" style="color: var(--secondary); font-size: 2rem;"></i>
+                <h1>Just <span>Sport</span></h1>
+            </div>
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i>
+                Back to Shopping
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="checkout-container">
+        <!-- Checkout Form -->
+        <div class="checkout-form">
+            <!-- Checkout Steps -->
+            <div class="checkout-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <span>Shipping</span>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <span>Payment</span>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <span>Confirmation</span>
+                </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="checkout-section">
+                <h2 class="section-title">Shipping Address</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" class="form-control" id="shipping-first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" class="form-control" id="shipping-last-name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-control" id="shipping-phone" placeholder="03-123456" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="shipping-email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Street Address *</label>
+                    <input type="text" class="form-control" id="shipping-street" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Building *</label>
+                        <input type="text" class="form-control" id="shipping-building" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Floor</label>
+                        <input type="text" class="form-control" id="shipping-floor">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Apartment *</label>
+                        <input type="text" class="form-control" id="shipping-apartment" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Area *</label>
+                        <select class="form-control" id="shipping-area" required onchange="updateShippingCost()">
+                            <option value="">Select Area</option>
+                            <option value="beirut">Beirut</option>
+                            <option value="mount-lebanon">Mount Lebanon</option>
+                            <option value="north">North Lebanon</option>
+                            <option value="south">South Lebanon</option>
+                            <option value="bekaa">Bekaa</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Additional Directions</label>
+                    <textarea class="form-control" id="shipping-directions" rows="3" placeholder="Near landmarks, building color, etc."></textarea>
+                </div>
+            </div>
+
+            <!-- Shipping Method -->
+            <div class="checkout-section">
+                <h2 class="section-title">Shipping Method</h2>
+                <div class="shipping-options">
+                    <div class="shipping-option selected">
+                        <div class="shipping-option-title">Standard Delivery</div>
+                        <div class="shipping-option-desc" id="shipping-cost-desc">Select your area to calculate shipping</div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Shipping Information -->
+                <div class="shipping-info">
+                    <h4><i class="fas fa-shipping-fast"></i> Delivery Information</h4>
+                    <div class="shipping-grid">
+                        <div class="shipping-type">
+                            <h5>Bike Delivery:</h5>
+                            <ul>
+                                <li>Beirut: $10 (3-5 business days)</li>
+                                <li>Other Areas: $20 (5-7 business days)</li>
+                            </ul>
+                        </div>
+                        <div class="shipping-type">
+                            <h5>Accessory Delivery:</h5>
+                            <ul>
+                                <li>All Areas: $4 (2-3 business days)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="shipping-note">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Mixed carts with bikes and accessories use bike delivery pricing.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="checkout-section">
+                <h2 class="section-title">Payment Method</h2>
+                <div class="payment-methods">
+                    <div class="payment-method selected">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>Cash on Delivery</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Order Button -->
+            <button class="btn btn-primary" onclick="completeOrder()">
+                <i class="fas fa-shopping-bag"></i>
+                Complete Order
+            </button>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h2 class="section-title">Order Summary</h2>
+            <div class="order-items" id="order-items">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div class="order-totals">
+                <div class="order-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="order-row">
+                    <span>Shipping</span>
+                    <span id="shipping-cost">$0.00</span>
+                </div>
+                <div class="order-row order-total">
+                    <span>Total</span>
+                    <span id="total">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Just Sport Premium Bikes. All rights reserved. | Premium Cycling Equipment Since 2010</p>
+        </div>
+    </footer>
+   <script>
+    // Cart data
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let selectedPayment = 'cod';
+    
+    // Enhanced delivery pricing with proper category detection
+    const deliveryPrices = {
+        bike: {
+            beirut: 10,
+            other: 20
+        },
+        accessory: {
+            beirut: 4,
+            other: 4
+        }
+    };
+
+    // Format price
+    function formatPrice(price) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(price);
+    }
+
+    // Category detection for bikes - using actual category from product data
+    function hasBikes() {
+        const bikeCategories = ['mountain', 'road', 'city', 'ebikes', 'hybrid', 'gravel', 'kids'];
+        return cart.some(item => {
+            const category = item.category ? item.category.toLowerCase() : '';
+            const isBike = bikeCategories.includes(category);
+            
+            console.log('Checking bike item:', { 
+                name: item.name,
+                category: item.category,
+                isBike: isBike
+            });
+            
+            return isBike;
+        });
+    }
+
+    // Category detection for accessories - using actual category from product data
+    function hasAccessories() {
+        const accessoryCategories = ['accessories', 'parts', 'shirt', 'short', 'overalls', 'shoes'];
+        return cart.some(item => {
+            const category = item.category ? item.category.toLowerCase() : '';
+            const isAccessory = accessoryCategories.includes(category);
+            
+            console.log('Checking accessory item:', { 
+                name: item.name,
+                category: item.category,
+                isAccessory: isAccessory
+            });
+            
+            return isAccessory;
+        });
+    }
+
+    // Helper function to check if specific items contain bikes
+    function hasBikesInItems(items) {
+        const bikeCategories = ['mountain', 'road', 'city', 'ebikes', 'hybrid', 'gravel', 'kids'];
+        return items.some(item => {
+            const category = item.category ? item.category.toLowerCase() : '';
+            return bikeCategories.includes(category);
+        });
+    }
+
+    // Helper function to check if specific items contain accessories
+    function hasAccessoriesInItems(items) {
+        const accessoryCategories = ['accessories', 'parts', 'shirt', 'short', 'overalls', 'shoes'];
+        return items.some(item => {
+            const category = item.category ? item.category.toLowerCase() : '';
+            return accessoryCategories.includes(category);
+        });
+    }
+
+    // Improved shipping cost calculation
+    function calculateShippingCost(area) {
+        if (!area) return 0;
+        
+        const hasBikeItems = hasBikes();
+        const hasAccessoryItems = hasAccessories();
+        
+        console.log('Shipping calculation:', {
+            area,
+            hasBikeItems,
+            hasAccessoryItems,
+            cartItems: cart.map(item => ({ 
+                name: item.name, 
+                category: item.category 
+            }))
+        });
+        
+        // If cart has bikes (or mixed cart), use bike pricing
+        if (hasBikeItems) {
+            const cost = area === 'beirut' ? deliveryPrices.bike.beirut : deliveryPrices.bike.other;
+            console.log('Using bike pricing:', cost);
+            return cost;
+        }
+        
+        // If cart only has accessories, use accessory pricing
+        if (hasAccessoryItems) {
+            const cost = deliveryPrices.accessory.beirut;
+            console.log('Using accessory pricing:', cost);
+            return cost;
+        }
+        
+        console.log('No bikes or accessories detected, free shipping');
+        return 0;
+    }
+
+    // Enhanced shipping cost update
+    function updateShippingCost() {
+        const area = document.getElementById('shipping-area').value;
+        const shippingCost = calculateShippingCost(area);
+        const shippingDesc = document.getElementById('shipping-cost-desc');
+        const shippingCostEl = document.getElementById('shipping-cost');
+        const subtotalEl = document.getElementById('subtotal');
+        const totalEl = document.getElementById('total');
+        
+        const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+        const total = subtotal + shippingCost;
+        
+        console.log('Updating shipping display:', {
+            area,
+            shippingCost,
+            subtotal,
+            total,
+            cartLength: cart.length,
+            cartItems: cart.map(item => ({ 
+                name: item.name, 
+                category: item.category 
+            }))
+        });
+        
+        if (area && cart.length > 0) {
+            const hasBikeItems = hasBikes();
+            const hasAccessoryItems = hasAccessories();
+            
+            let shippingText = '';
+            
+            if (hasBikeItems) {
+                shippingText = `${area === 'beirut' ? '3-5' : '5-7'} business days • ${formatPrice(shippingCost)} (Bike Delivery)`;
+            } else if (hasAccessoryItems) {
+                shippingText = `2-3 business days • ${formatPrice(shippingCost)} (Accessory Delivery)`;
+            } else {
+                shippingText = 'Free shipping (No bikes or accessories detected)';
+            }
+            
+            shippingDesc.textContent = shippingText;
+            shippingCostEl.textContent = formatPrice(shippingCost);
+            subtotalEl.textContent = formatPrice(subtotal);
+            totalEl.textContent = formatPrice(total);
+        } else if (cart.length === 0) {
+            shippingDesc.textContent = 'Add items to cart to calculate shipping';
+            shippingCostEl.textContent = '$0.00';
+            subtotalEl.textContent = '$0.00';
+            totalEl.textContent = '$0.00';
+        } else {
+            shippingDesc.textContent = 'Select delivery area to calculate shipping';
+            shippingCostEl.textContent = '$0.00';
+            subtotalEl.textContent = formatPrice(subtotal);
+            totalEl.textContent = formatPrice(subtotal);
+        }
+    }
+
+    // Update order summary display
+    function updateOrderSummaryDisplay() {
+        const area = document.getElementById('shipping-area').value;
+        const shippingCost = calculateShippingCost(area);
+        const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+        const total = subtotal + shippingCost;
+        
+        document.getElementById('subtotal').textContent = formatPrice(subtotal);
+        document.getElementById('shipping-cost').textContent = formatPrice(shippingCost);
+        document.getElementById('total').textContent = formatPrice(total);
+    }
+
+    // Get category display name
+    function getCategoryDisplayName(category) {
+        const categories = {
+            mountain: 'Mountain Bike',
+            road: 'Road Bike',
+            city: 'City Bike',
+            ebikes: 'E-Bike',
+            hybrid: 'Hybrid Bike',
+            gravel: 'Gravel Bike',
+            kids: 'Kids Bike',
+            accessories: 'Accessory',
+            parts: 'Bike Part',
+            shirt: 'Cycling Shirt',
+            short: 'Cycling Short',
+            overalls: 'Cycling Overall',
+            shoes: 'Cycling Shoe'
+        };
+        return categories[category] || category;
+    }
+
+    // Enhanced cart items loading with category detection
+    function loadCartItems() {
+        const container = document.getElementById('order-items');
+        
+        if (cart.length === 0) {
+            container.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-bicycle"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some premium bikes to your cart first!</p>
+                    <a href="index.html" class="btn btn-outline" style="margin-top: 1rem;">
+                        Continue Shopping
+                    </a>
+                </div>
+            `;
+            // Reset shipping display when cart is empty
+            document.getElementById('shipping-cost-desc').textContent = 'Add items to cart to calculate shipping';
+            document.getElementById('shipping-cost').textContent = '$0.00';
+            document.getElementById('subtotal').textContent = '$0.00';
+            document.getElementById('total').textContent = '$0.00';
+            return;
+        }
+
+        container.innerHTML = cart.map(item => {
+            // Enhanced category detection for display
+            const isBike = hasBikesInItems([item]);
+            const isAccessory = hasAccessoriesInItems([item]);
+            let itemType = getCategoryDisplayName(item.category);
+            let deliveryType = 'Standard Delivery';
+            let icon = 'shopping-bag';
+            
+            if (isBike) {
+                deliveryType = 'Bike Delivery';
+                icon = 'bicycle';
+            } else if (isAccessory) {
+                deliveryType = 'Accessory Delivery';
+                icon = 'tag';
+            }
+            
+            return `
+                <div class="order-item">
+                    <img src="${item.image}" alt="${item.name}" class="order-item-image" 
+                         onerror="this.src='https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'">
+                    <div class="order-item-details">
+                        <div class="order-item-name">${item.name}</div>
+                        <div class="bike-feature">
+                            <i class="fas fa-${icon}"></i>
+                            <span>${itemType} • ${deliveryType}</span>
+                        </div>
+                        <div class="order-item-price">${formatPrice(item.price)} × ${item.quantity}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Update totals after loading items
+        updateShippingCost();
+    }
+
+    // Validate form
+    function validateForm() {
+        const requiredFields = [
+            'shipping-first-name', 'shipping-last-name', 'shipping-phone',
+            'shipping-street', 'shipping-building', 'shipping-apartment', 'shipping-area'
+        ];
+
+        for (let fieldId of requiredFields) {
+            const field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                alert(`Please fill in ${field.previousElementSibling.textContent}`);
+                field.focus();
+                return false;
+            }
+        }
+
+        // Validate phone format (Lebanese)
+        const phone = document.getElementById('shipping-phone').value;
+        if (!/^(0[0-9]{1,2}|7[0-9]|8[0-9]|9[0-9])-?\s?[0-9]{6}$/.test(phone)) {
+            alert('Please enter a valid Lebanese phone number (e.g., 03-123456)');
+            document.getElementById('shipping-phone').focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    // Complete order
+    // Complete order - FIXED VERSION
+async function completeOrder() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+
+    if (!validateForm()) {
+        return;
+    }
+
+    // Calculate totals
+    const area = document.getElementById('shipping-area').value;
+    const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+    const shipping = calculateShippingCost(area);
+    const total = subtotal + shipping;
+
+    // Prepare order data for API
+    const orderData = {
+        items: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: parseFloat(item.price),
+            quantity: item.quantity,
+            image: item.image,
+            category: item.category
+        })),
+        shipping: getShippingData(),
+        subtotal: subtotal,
+        shippingCost: shipping,
+        total: total
+    };
+
+    try {
+        console.log('Sending order to API:', orderData);
+        
+        // Send order to your server API
+        const response = await fetch('https://herself-correlation-integral-but.trycloudflare.comapi/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            console.log('Order created successfully:', result);
+            
+            // Store data for confirmation page
+            localStorage.setItem('lastOrder', JSON.stringify({
+                orderId: result.order.id,
+                total: result.order.order_data.total,
+                date: result.order.created_at,
+                items: result.order.order_data.items.length,
+                shipping: result.order.order_data.shippingCost
+            }));
+
+            // Clear cart
+            localStorage.removeItem('cart');
+            cart = [];
+
+            // Redirect to confirmation page
+            window.location.href = 'order-confirmation.html';
+        } else {
+            throw new Error(result.message || 'Failed to create order');
+        }
+        
+    } catch (error) {
+        console.error('Error processing order:', error);
+        alert('There was an error processing your order: ' + error.message);
+    }
+}
+
+    // Get shipping data from form
+    function getShippingData() {
+        return {
+            firstName: document.getElementById('shipping-first-name').value,
+            lastName: document.getElementById('shipping-last-name').value,
+            phone: document.getElementById('shipping-phone').value,
+            email: document.getElementById('shipping-email').value,
+            street: document.getElementById('shipping-street').value,
+            building: document.getElementById('shipping-building').value,
+            floor: document.getElementById('shipping-floor').value,
+            apartment: document.getElementById('shipping-apartment').value,
+            area: document.getElementById('shipping-area').value,
+            directions: document.getElementById('shipping-directions').value
+        };
+    }
+
+    // Initialize checkout page with enhanced shipping
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚴 Initializing checkout with cart:', cart);
+        console.log('Cart items with categories:', cart.map(item => ({ 
+            name: item.name,
+            category: item.category,
+            price: item.price,
+            quantity: item.quantity
+        })));
+        
+        loadCartItems();
+        
+        // Update shipping when area changes
+        document.getElementById('shipping-area').addEventListener('change', updateShippingCost);
+        
+        // Also update shipping when cart changes (for multiple tabs)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'cart') {
+                cart = JSON.parse(e.newValue) || [];
+                console.log('Cart updated from storage:', cart);
+                loadCartItems();
+                updateShippingCost();
+            }
+        });
+
+        // Debug: Log cart contents for troubleshooting
+        console.log('Cart analysis:', {
+            cartItems: cart.map(item => ({ 
+                name: item.name, 
+                category: item.category 
+            })),
+            hasBikes: hasBikes(),
+            hasAccessories: hasAccessories(),
+            bikeCategories: ['mountain', 'road', 'city', 'ebikes', 'hybrid', 'gravel', 'kids'],
+            accessoryCategories: ['accessories', 'parts', 'shirt', 'short', 'overalls', 'shoes']
+        });
+        
+        // Force initial shipping calculation after a short delay to ensure DOM is ready
+        setTimeout(() => {
+            updateShippingCost();
+            console.log('Initial shipping calculation completed');
+        }, 500);
+    });
+</script>
+</body>
+</html>
