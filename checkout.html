@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Checkout | Just Sport Lebanon</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root{--black:#000;--white:#fff;--gray-100:#f5f5f5;--gray-200:#eee;--gray-300:#e0e0e0;--gray-400:#bdbdbd;--gray-500:#9e9e9e;--gray-600:#757575;--success:#22c55e;--danger:#ef4444;--warning:#f59e0b;--info:#3b82f6;--shadow-sm:0 1px 2px rgba(0,0,0,0.1);--shadow-md:0 4px 6px rgba(0,0,0,0.1);--shadow-lg:0 10px 25px rgba(0,0,0,0.15);--transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:var(--gray-100);color:var(--black);min-height:100vh}
+        
+        /* Header - Responsive */
+        .checkout-header{background:var(--white);padding:1rem 0;border-bottom:1px solid var(--gray-200);position:sticky;top:0;z-index:100}
+        .header-content{max-width:1400px;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem}
+        .logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--black);text-decoration:none;letter-spacing:2px;display:flex;align-items:center;gap:0.5rem}
+        .back-link{color:var(--gray-600);text-decoration:none;display:flex;align-items:center;gap:0.5rem;font-weight:600;font-size:0.85rem}
+        .secure-badge{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem}
+        
+        /* Main Container */
+        .checkout-container{max-width:1200px;margin:1.5rem auto;padding:0 1rem;display:grid;grid-template-columns:1fr 380px;gap:1.5rem}
+        .checkout-form{background:var(--white);border:1px solid var(--gray-200);padding:1.5rem;height:fit-content}
+        .section-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;margin-bottom:1rem;color:var(--black);display:flex;align-items:center;gap:0.5rem}
+        .form-section{margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--gray-200)}
+        .form-section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .form-group{margin-bottom:1rem}
+        .form-group.full{grid-column:1 / -1}
+        .form-label{display:block;margin-bottom:0.4rem;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px}
+        .form-input{width:100%;padding:0.8rem;border:2px solid var(--gray-300);font-family:'Inter',sans-serif;font-size:0.9rem;transition:var(--transition);outline:none;background:var(--white);border-radius:0}
+        .form-input:focus{border-color:var(--black)}
+        .form-input.error{border-color:var(--danger);background:rgba(239,68,68,0.05)}
+        select.form-input{cursor:pointer}
+        
+        /* Payment Methods */
+        .payment-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1rem}
+        .payment-method{padding:1rem 0.5rem;border:2px solid var(--gray-300);text-align:center;cursor:pointer;transition:var(--transition);background:var(--white)}
+        .payment-method.active{border-color:var(--black);background:var(--black);color:var(--white)}
+        .payment-method i{font-size:1.5rem;margin-bottom:0.5rem;display:block}
+        .payment-method-title{font-weight:700;font-size:0.75rem}
+        .payment-method-desc{font-size:0.65rem;opacity:0.7}
+        .card-form{background:var(--gray-100);padding:1rem;display:none;border:1px solid var(--gray-200)}
+        .card-form.active{display:block}
+        .card-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0.75rem}
+        
+        /* Shipping Options */
+        .shipping-options{display:flex;flex-direction:column;gap:0.75rem}
+        .shipping-option{padding:1rem;border:2px solid var(--gray-300);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:0.75rem}
+        .shipping-option.active{border-color:var(--black);background:var(--black);color:var(--white)}
+        .shipping-radio{width:20px;height:20px;border:2px solid var(--gray-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%}
+        .shipping-option.active .shipping-radio{border-color:var(--white);background:var(--white)}
+        .shipping-radio i{font-size:0.6rem;opacity:0}
+        .shipping-option.active .shipping-radio i{opacity:1}
+        .shipping-info{flex:1}
+        .shipping-title{font-weight:700;font-size:0.85rem;margin-bottom:0.15rem}
+        .shipping-desc{font-size:0.7rem;opacity:0.7}
+        .shipping-price{font-weight:800;font-size:0.9rem}
+        
+        /* Order Summary */
+        .order-summary{position:sticky;top:100px;height:fit-content}
+        .summary-card{background:var(--white);border:1px solid var(--gray-200);padding:1.25rem;margin-bottom:1rem}
+        .summary-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;margin-bottom:1rem;color:var(--black)}
+        .cart-items-summary{max-height:250px;overflow-y:auto;margin-bottom:1rem}
+        .summary-item{display:flex;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--gray-200)}
+        .summary-item-image{width:50px;height:50px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;border:1px solid var(--gray-200)}
+        .summary-item-name{font-weight:700;font-size:0.85rem;margin-bottom:0.15rem}
+        .summary-item-variant{font-size:0.7rem;color:var(--gray-600)}
+        .summary-item-price{font-weight:700;font-size:0.85rem}
+        .promo-code{display:flex;gap:0.5rem;margin-bottom:1rem}
+        .promo-input{flex:1;padding:0.6rem 0.8rem;border:2px solid var(--gray-300);font-size:0.85rem}
+        .promo-btn{padding:0.6rem 1rem;background:var(--black);color:var(--white);border:none;font-weight:700;font-size:0.75rem;cursor:pointer}
+        .summary-row{display:flex;justify-content:space-between;margin-bottom:0.5rem;font-size:0.85rem;color:var(--gray-600)}
+        .summary-row.total{font-size:1.2rem;font-weight:800;color:var(--black);padding-top:0.75rem;border-top:2px solid var(--black);margin-top:0.75rem}
+        .place-order-btn{width:100%;padding:1rem;background:var(--black);color:var(--white);border:none;font-size:1rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1rem}
+        .trust-badges{display:flex;justify-content:center;gap:1rem;margin-top:1rem;font-size:1.2rem;color:var(--gray-500)}
+        
+        /* Payment Guide Modal - Mobile Optimized */
+        .payment-guide-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:3000;display:none;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--transition);overflow-y:auto;padding:1rem}
+        .payment-guide-modal.active{display:flex;opacity:1;visibility:visible}
+        .payment-guide-content{background:var(--white);padding:1.5rem;text-align:center;max-width:500px;width:100%;animation:scaleIn 0.5s ease;border:2px solid var(--black);position:relative;max-height:85vh;overflow-y:auto;margin:auto}
+        .modal-close-btn{position:sticky;top:0;right:0;float:right;background:var(--white);border:2px solid var(--black);font-size:1rem;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin-bottom:0.75rem;z-index:10}
+        .payment-guide-icon{width:70px;height:70px;background:linear-gradient(135deg, var(--black) 0%, #2d2d2d 100%);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border-radius:50%}
+        .payment-guide-icon i{font-size:2rem;color:var(--white)}
+        .payment-guide-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;margin-bottom:0.5rem}
+        .payment-guide-message{font-size:0.8rem;margin-bottom:1rem}
+        .payment-guide-order-id{background:linear-gradient(135deg, var(--black) 0%, #2d2d2d 100%);padding:0.75rem;margin:1rem 0;border-radius:8px}
+        .order-id-label{font-size:0.6rem;letter-spacing:2px;color:rgba(255,255,255,0.7);margin-bottom:0.3rem}
+        .order-id-value{font-size:1.2rem;font-weight:800;font-family:monospace;color:var(--white);letter-spacing:1px}
+        .order-id-note{font-size:0.6rem;color:rgba(255,255,255,0.6)}
+        .payment-guide-amount{background:var(--gray-100);padding:0.75rem;margin:1rem 0;border:2px solid var(--gray-300)}
+        .amount-label{font-size:0.6rem;letter-spacing:1px;margin-bottom:0.2rem}
+        .amount-value{font-size:1.3rem;font-weight:800}
+        .payment-guide-number{background:var(--black);color:var(--white);padding:0.6rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;flex-wrap:wrap;border-radius:8px}
+        .number-label{font-size:0.65rem;letter-spacing:1px}
+        .number-value{font-size:1rem;font-weight:800;font-family:monospace}
+        .copy-number{cursor:pointer;font-size:0.8rem}
+        .payment-steps{text-align:left;background:var(--gray-100);padding:0.75rem;margin-bottom:1rem;border-radius:8px}
+        .step-title{font-weight:800;margin-bottom:0.5rem;font-size:0.7rem;letter-spacing:1px}
+        .step-item{display:flex;align-items:flex-start;gap:0.5rem;margin-bottom:0.5rem;font-size:0.7rem;line-height:1.3}
+        .step-item i{color:var(--success);margin-top:0.1rem;font-size:0.7rem}
+        .payment-note{background:rgba(34,197,94,0.1);padding:0.6rem;border-left:3px solid var(--success);margin-top:0.5rem;font-size:0.7rem;border-radius:4px}
+        .payment-guide-actions{display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+        .btn-payment-confirm{padding:0.6rem 1.2rem;background:var(--success);color:var(--white);border:none;font-weight:700;font-size:0.8rem;cursor:pointer;border-radius:4px}
+        .btn-payment-cancel{padding:0.6rem 1.2rem;background:var(--white);color:var(--black);border:2px solid var(--black);font-weight:700;font-size:0.8rem;cursor:pointer;border-radius:4px}
+        
+        /* Success Modal */
+        .success-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:3500;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--transition)}
+        .success-modal.active{opacity:1;visibility:visible}
+        .success-content{background:var(--white);padding:2rem;text-align:center;max-width:400px;width:90%;animation:scaleIn 0.5s ease;border:2px solid var(--black)}
+        .success-icon{width:60px;height:60px;background:var(--success);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border-radius:50%}
+        .success-icon i{font-size:2rem;color:var(--white)}
+        .success-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;margin-bottom:0.5rem}
+        .success-message{font-size:0.85rem;margin-bottom:1rem}
+        .order-number{background:var(--gray-100);padding:0.5rem 1rem;font-family:monospace;font-size:0.85rem;font-weight:700;margin-bottom:1rem;display:inline-block;border:1px solid var(--gray-300)}
+        .success-actions{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap}
+        .btn-home,.btn-orders{padding:0.6rem 1.2rem;font-size:0.8rem;text-decoration:none;font-weight:700}
+        .btn-home{background:var(--black);color:var(--white)}
+        .btn-orders{background:var(--white);color:var(--black);border:2px solid var(--black)}
+        
+        /* Loading */
+        .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.95);z-index:2500;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+        .loading-overlay.active{display:flex}
+        .spinner{width:40px;height:40px;border:3px solid var(--gray-200);border-top-color:var(--black);border-radius:50%;animation:spin 1s linear infinite}
+        .empty-cart{text-align:center;padding:3rem 1.5rem;background:var(--white);border:1px solid var(--gray-200);max-width:500px;margin:3rem auto}
+        .empty-cart i{font-size:3rem;margin-bottom:1rem}
+        .empty-cart h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;margin-bottom:0.5rem}
+        .btn-shop{padding:0.8rem 1.5rem;background:var(--black);color:var(--white);text-decoration:none;font-weight:700;display:inline-block}
+        
+        @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .checkout-container{grid-template-columns:1fr;margin:1rem auto;padding:0 0.75rem;gap:1rem}
+            .checkout-form{padding:1rem}
+            .section-title{font-size:1.2rem}
+            .form-grid{grid-template-columns:1fr;gap:0.75rem}
+            .form-input{padding:0.7rem;font-size:0.85rem}
+            .payment-methods{gap:0.5rem}
+            .payment-method{padding:0.75rem 0.25rem}
+            .payment-method i{font-size:1.2rem}
+            .card-row{grid-template-columns:1fr;gap:0.5rem}
+            .shipping-option{padding:0.75rem}
+            .summary-card{padding:1rem}
+            .summary-title{font-size:1.2rem}
+            .header-content{padding:0 1rem}
+            .logo{font-size:1.2rem}
+            .back-link span{display:none}
+            .back-link i{font-size:1.2rem}
+            .secure-badge span{display:none}
+            .payment-guide-content{padding:1rem;max-height:80vh}
+            .payment-guide-title{font-size:1.2rem}
+            .success-content{padding:1.5rem}
+            .success-title{font-size:1.5rem}
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .checkout-container{grid-template-columns:1fr 350px;gap:1.5rem}
+            .checkout-form{padding:1.5rem}
+        }
+        
+        @media (min-width: 1025px) {
+            .checkout-container{grid-template-columns:1fr 400px;gap:2rem}
+            .checkout-form{padding:2rem}
+        }
+        
+        /* Touch-friendly tap targets */
+        button, .payment-method, .shipping-option, .promo-btn, .place-order-btn,
+        .modal-close-btn, .btn-payment-confirm, .btn-payment-cancel {
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        select, button, input {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header class="checkout-header">
+        <div class="header-content">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i><span>Continue Shopping</span></a>
+            <a href="index.html" class="logo"><i class="fas fa-bicycle"></i> JUST SPORT</a>
+            <div class="secure-badge"><i class="fas fa-lock"></i><span>Secure Checkout</span></div>
+        </div>
+    </header>
+
+    <div class="empty-cart" id="emptyCart" style="display: none;">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Your Cart is Empty</h2>
+        <p>Add some items to proceed with checkout</p>
+        <a href="index.html" class="btn-shop">Start Shopping</a>
+    </div>
+
+    <div class="checkout-container" id="checkoutContainer">
+        <div class="checkout-form">
+            <div class="form-section">
+                <h2 class="section-title"><i class="fas fa-user-circle"></i> Contact</h2>
+                <div class="form-group full">
+                    <label class="form-label">Email <span>*</span></label>
+                    <input type="email" class="form-input" id="email" placeholder="you@example.com">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Phone <span>*</span></label>
+                    <input type="tel" class="form-input" id="phone" placeholder="+961 XX XXX XXX">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title"><i class="fas fa-map-marker-alt"></i> Shipping</h2>
+                <div class="form-grid">
+                    <div class="form-group"><label class="form-label">First Name <span>*</span></label><input type="text" class="form-input" id="firstName" placeholder="John"></div>
+                    <div class="form-group"><label class="form-label">Last Name <span>*</span></label><input type="text" class="form-input" id="lastName" placeholder="Doe"></div>
+                    <div class="form-group"><label class="form-label">City <span>*</span></label><select class="form-input" id="city"><option value="">Select</option><option value="beirut">Beirut</option><option value="tripoli">Tripoli</option><option value="sidon">Sidon</option><option value="tyre">Tyre</option><option value="jounieh">Jounieh</option><option value="zahle">Zahle</option></select></div>
+                    <div class="form-group"><label class="form-label">Area <span>*</span></label><input type="text" class="form-input" id="area" placeholder="Hamra, Achrafieh..."></div>
+                    <div class="form-group full"><label class="form-label">Street <span>*</span></label><input type="text" class="form-input" id="street" placeholder="Street name & number"></div>
+                    <div class="form-group"><label class="form-label">Building</label><input type="text" class="form-input" id="building" placeholder="Building name/number"></div>
+                    <div class="form-group"><label class="form-label">Floor</label><input type="text" class="form-input" id="floor" placeholder="Floor/Apt number"></div>
+                    <div class="form-group full"><label class="form-label">Landmark</label><input type="text" class="form-input" id="landmark" placeholder="Nearby landmark"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title"><i class="fas fa-truck"></i> Delivery</h2>
+                <div class="shipping-options">
+                    <div class="shipping-option active" onclick="selectShipping(this, 0)"><div class="shipping-radio"><i class="fas fa-check"></i></div><div class="shipping-info"><div class="shipping-title">Free Standard</div><div class="shipping-desc">5-7 days • All Lebanon</div></div><div class="shipping-price">FREE</div></div>
+                    <div class="shipping-option" onclick="selectShipping(this, 15)"><div class="shipping-radio"><i class="fas fa-check"></i></div><div class="shipping-info"><div class="shipping-title">Express</div><div class="shipping-desc">2-3 days • Major cities</div></div><div class="shipping-price">$15</div></div>
+                    <div class="shipping-option" onclick="selectShipping(this, 25)"><div class="shipping-radio"><i class="fas fa-check"></i></div><div class="shipping-info"><div class="shipping-title">Same Day</div><div class="shipping-desc">Today • Beirut area</div></div><div class="shipping-price">$25</div></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title"><i class="fas fa-credit-card"></i> Payment</h2>
+                <div class="payment-methods">
+                    <div class="payment-method active" onclick="selectPayment('card', this)"><i class="fas fa-credit-card"></i><div class="payment-method-title">Card</div><div class="payment-method-desc">Visa/Mastercard</div></div>
+                    <div class="payment-method" onclick="selectPayment('cash', this)"><i class="fas fa-money-bill-wave"></i><div class="payment-method-title">Cash</div><div class="payment-method-desc">On delivery</div></div>
+                    <div class="payment-method" onclick="selectPayment('whish', this)"><i class="fas fa-mobile-alt"></i><div class="payment-method-title">Whish</div><div class="payment-method-desc">Mobile wallet</div></div>
+                </div>
+                <div class="card-form active" id="cardForm">
+                    <div class="form-group"><label class="form-label">Card Number</label><input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19"></div>
+                    <div class="card-row"><div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" id="cardName" placeholder="JOHN DOE"></div><div class="form-group"><label class="form-label">Expiry</label><input type="text" class="form-input" id="expiry" placeholder="MM/YY" maxlength="5"></div><div class="form-group"><label class="form-label">CVC</label><input type="text" class="form-input" id="cvc" placeholder="123" maxlength="3"></div></div>
+                </div>
+            </div>
+
+            <button class="place-order-btn" onclick="placeOrder()" id="placeOrderBtn"><i class="fas fa-lock"></i> Complete Order</button>
+        </div>
+
+        <div class="order-summary">
+            <div class="summary-card">
+                <h3 class="summary-title">Your Order</h3>
+                <div class="cart-items-summary" id="cartItems"></div>
+                <div class="promo-code"><input type="text" class="promo-input" id="promoInput" placeholder="Promo code"><button class="promo-btn" onclick="applyPromo()">Apply</button></div>
+                <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+                <div class="summary-row"><span>Shipping</span><span id="shipping">FREE</span></div>
+                <div class="summary-row"><span>Tax (11%)</span><span id="tax">$0.00</span></div>
+                <div class="summary-row total"><span>Total</span><span id="total">$0.00</span></div>
+                <div class="trust-badges"><i class="fas fa-shield-alt"></i><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fas fa-lock"></i></div>
+            </div>
+            <div class="summary-card" style="background: var(--gray-100);">
+                <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-headset" style="font-size: 1.5rem;"></i><div><div style="font-weight: 700;">Need Help?</div><div style="font-size: 0.75rem;">+961 70 225 928</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Guide Modal -->
+    <div class="payment-guide-modal" id="paymentGuideModal">
+        <div class="payment-guide-content">
+            <button class="modal-close-btn" onclick="closePaymentGuide()"><i class="fas fa-times"></i></button>
+            <div class="payment-guide-icon"><i class="fas fa-mobile-alt"></i></div>
+            <h2 class="payment-guide-title">Complete Payment</h2>
+            <p class="payment-guide-message">Your order has been created. Complete mobile payment to confirm.</p>
+            
+            <div class="payment-guide-order-id">
+                <div class="order-id-label">ORDER ID</div>
+                <div class="order-id-value" id="paymentOrderId">ORD-XXXXXX</div>
+                <div class="order-id-note">Use as payment reference</div>
+            </div>
+            
+            <div class="payment-guide-amount">
+                <div class="amount-label">AMOUNT DUE</div>
+                <div class="amount-value" id="paymentAmount">$0.00</div>
+            </div>
+            
+            <div class="payment-guide-number">
+                <span class="number-label">Send to:</span>
+                <span class="number-value" id="paymentNumber">+961 70 225 928</span>
+                <i class="fas fa-copy copy-number" onclick="copyPaymentNumber()"></i>
+            </div>
+            
+            <div class="payment-steps">
+                <div class="step-title">How to pay:</div>
+                <div class="step-item"><i class="fas fa-check-circle"></i><span>Open Whish app or mobile banking</span></div>
+                <div class="step-item"><i class="fas fa-check-circle"></i><span>Select "Send Money"</span></div>
+                <div class="step-item"><i class="fas fa-check-circle"></i><span>Enter number: <strong>+961 70 225 928</strong></span></div>
+                <div class="step-item"><i class="fas fa-check-circle"></i><span>Amount: <strong id="stepAmount">$0.00</strong></span></div>
+                <div class="step-item"><i class="fas fa-check-circle"></i><span>Reference: <strong id="stepOrderId">Order ID</strong></span></div>
+            </div>
+            
+            <div class="payment-note"><i class="fas fa-info-circle"></i> Order processed within 24h after payment confirmation</div>
+            
+            <div class="payment-guide-actions">
+                <button class="btn-payment-confirm" onclick="completeWhishOrder()"><i class="fas fa-check"></i> I've Paid</button>
+                <button class="btn-payment-cancel" onclick="closePaymentGuide()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div class="loading-text">Processing...</div></div>
+    <div class="success-modal" id="successModal"><div class="success-content"><div class="success-icon"><i class="fas fa-check"></i></div><h2 class="success-title">Order Confirmed!</h2><p class="success-message">Confirmation sent to <span id="confirmEmail"></span></p><div class="order-number" id="orderNumber">#ORD-0000</div><div class="success-actions"><a href="index.html" class="btn-home">Continue Shopping</a><a href="#" class="btn-orders">Track Order</a></div></div></div>
+
+    <script>
+        const base = 'https://api.justsport-lb.store';
+        const sessionId = localStorage.getItem('cartSessionId') || (() => { const id = 'sess_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('cartSessionId', id); return id; })();
+
+        const api = {
+            getCart: async () => { const res = await fetch(`${base}/api/cart/${sessionId}`); if (!res.ok) return { items: [] }; return res.json(); },
+            clearCart: async () => { const res = await fetch(`${base}/api/cart/${sessionId}`, { method: 'DELETE' }); if (!res.ok) throw new Error('Failed to clear cart'); return res.json(); },
+            createOrder: async (orderData) => { const res = await fetch(`${base}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) }); if (!res.ok) throw new Error('Failed to create order'); return res.json(); }
+        };
+
+        let cart = [], shippingCost = 0, currentPayment = 'card', currentOrderId = null, appliedDiscount = 0, promoCodeApplied = '';
+
+        document.addEventListener('DOMContentLoaded', async () => { await loadCart(); });
+
+        async function loadCart() {
+            try {
+                const data = await api.getCart();
+                cart = data.items || [];
+                if (cart.length === 0) { document.getElementById('checkoutContainer').style.display = 'none'; document.getElementById('emptyCart').style.display = 'block'; return; }
+                renderCart(); updateTotals(); setupCardFormatting();
+            } catch (err) { console.error('Failed to load cart:', err); alert('Failed to load cart. Please try again.'); }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            container.innerHTML = cart.map(item => `<div class="summary-item"><div class="summary-item-image"><i class="fas ${item.icon || 'fa-bicycle'}"></i></div><div class="summary-item-details"><div class="summary-item-name">${item.name}</div><div class="summary-item-variant">Qty: ${item.quantity}</div></div><div class="summary-item-price">$${(item.price * item.quantity).toFixed(2)}</div></div>`).join('');
+        }
+
+        function getSubtotal() { return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); }
+
+        function updateTotals() {
+            const subtotal = getSubtotal(), tax = subtotal * 0.11, total = subtotal + tax + shippingCost - appliedDiscount;
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function applyPromo() {
+            const code = document.getElementById('promoInput').value.trim().toUpperCase();
+            const promos = { 'SAVE10': { type: 'percentage', value: 10 }, 'SAVE20': { type: 'percentage', value: 20 } };
+            if (promos[code]) {
+                const subtotal = getSubtotal();
+                if (promos[code].type === 'percentage') appliedDiscount = subtotal * (promos[code].value / 100);
+                promoCodeApplied = code;
+                updateTotals();
+                alert(`Promo code ${code} applied!`);
+            } else alert('Invalid promo code');
+        }
+
+        function selectShipping(element, cost) { document.querySelectorAll('.shipping-option').forEach(opt => opt.classList.remove('active')); element.classList.add('active'); shippingCost = cost; updateTotals(); }
+        function selectPayment(method, element) { document.querySelectorAll('.payment-method').forEach(pm => pm.classList.remove('active')); element.classList.add('active'); currentPayment = method; document.getElementById('cardForm').classList.toggle('active', method === 'card'); }
+
+        function setupCardFormatting() {
+            const cardNumber = document.getElementById('cardNumber');
+            if (cardNumber) cardNumber.addEventListener('input', (e) => { let value = e.target.value.replace(/\s/g, ''); if (value.length > 0) value = value.match(new RegExp('.{1,4}', 'g')).join(' '); e.target.value = value; });
+            const expiry = document.getElementById('expiry');
+            if (expiry) expiry.addEventListener('input', (e) => { let value = e.target.value.replace(/\D/g, ''); if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2, 4); e.target.value = value; });
+        }
+
+        function validateForm() {
+            let isValid = true;
+            const required = ['email', 'phone', 'firstName', 'lastName', 'city', 'area', 'street'];
+            required.forEach(id => { const field = document.getElementById(id); if (field && !field.value.trim()) { field.classList.add('error'); isValid = false; } else if (field) field.classList.remove('error'); });
+            const email = document.getElementById('email').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('email').classList.add('error'); isValid = false; }
+            if (document.getElementById('phone').value.length < 8) { document.getElementById('phone').classList.add('error'); isValid = false; }
+            if (currentPayment === 'card') { const cardFields = ['cardNumber', 'cardName', 'expiry', 'cvc']; cardFields.forEach(id => { const field = document.getElementById(id); if (field && !field.value.trim()) { field.classList.add('error'); isValid = false; } else if (field) field.classList.remove('error'); }); }
+            return isValid;
+        }
+
+        function getFullAddress() {
+            const city = document.getElementById('city').options[document.getElementById('city').selectedIndex]?.text || document.getElementById('city').value;
+            const area = document.getElementById('area').value, street = document.getElementById('street').value, building = document.getElementById('building').value, floor = document.getElementById('floor').value, landmark = document.getElementById('landmark').value;
+            let address = `${street}, ${area}`;
+            if (building) address += `, Bldg: ${building}`;
+            if (floor) address += `, Fl: ${floor}`;
+            if (landmark) address += ` (${landmark})`;
+            address += `, ${city}`;
+            return address;
+        }
+
+        function showPaymentGuide(totalAmount, orderId) {
+            document.getElementById('paymentAmount').textContent = `$${totalAmount.toFixed(2)}`;
+            document.getElementById('stepAmount').textContent = `$${totalAmount.toFixed(2)}`;
+            document.getElementById('paymentOrderId').textContent = orderId;
+            document.getElementById('stepOrderId').innerHTML = `<strong>${orderId}</strong>`;
+            document.getElementById('paymentGuideModal').classList.add('active');
+        }
+
+        function closePaymentGuide() { document.getElementById('paymentGuideModal').classList.remove('active'); }
+        function copyPaymentNumber() { const number = document.getElementById('paymentNumber').textContent; navigator.clipboard.writeText(number); alert('Number copied!'); }
+        function completeWhishOrder() { closePaymentGuide(); document.getElementById('confirmEmail').textContent = document.getElementById('email').value; document.getElementById('orderNumber').textContent = currentOrderId; document.getElementById('successModal').classList.add('active'); }
+
+        async function createOrderAndProceed() {
+            const total = parseFloat(document.getElementById('total').textContent.replace('$', ''));
+            const orderData = {
+                customer_email: document.getElementById('email').value, customer_phone: document.getElementById('phone').value,
+                first_name: document.getElementById('firstName').value, last_name: document.getElementById('lastName').value,
+                address: getFullAddress(), city: document.getElementById('city').options[document.getElementById('city').selectedIndex]?.text || document.getElementById('city').value,
+                area: document.getElementById('area').value, street: document.getElementById('street').value, building: document.getElementById('building').value, floor: document.getElementById('floor').value, landmark: document.getElementById('landmark').value,
+                postal_code: '', shipping_method: shippingCost === 0 ? 'standard' : shippingCost === 15 ? 'express' : 'same_day', shipping_cost: shippingCost,
+                payment_method: currentPayment, items: cart.map(item => ({ id: item.id, name: item.name, quantity: item.quantity, price: item.price, icon: item.icon })),
+                subtotal: getSubtotal(), tax: getSubtotal() * 0.11, total: total, discount_applied: appliedDiscount, promo_code: promoCodeApplied || null
+            };
+            try { const result = await api.createOrder(orderData); currentOrderId = result.orderId; await api.clearCart(); return result; } 
+            catch (err) { console.error('Order creation failed:', err); throw err; }
+        }
+
+        async function placeOrder() {
+            if (!validateForm()) { alert('Please fill in all required fields correctly'); return; }
+            const btn = document.getElementById('placeOrderBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+            try {
+                const result = await createOrderAndProceed();
+                if (currentPayment === 'whish') { const total = parseFloat(document.getElementById('total').textContent.replace('$', '')); showPaymentGuide(total, result.orderId); }
+                else { document.getElementById('confirmEmail').textContent = document.getElementById('email').value; document.getElementById('orderNumber').textContent = result.orderId; document.getElementById('successModal').classList.add('active'); }
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-lock"></i> Complete Order';
+            } catch (err) { console.error('Order failed:', err); alert('Failed to place order. Please try again.'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-lock"></i> Complete Order'; }
+        }
+
+        document.addEventListener('click', (e) => { if (e.target.classList.contains('payment-guide-modal')) closePaymentGuide(); if (e.target.classList.contains('success-modal')) document.getElementById('successModal').classList.remove('active'); });
+    </script>
+</body>
+</html>

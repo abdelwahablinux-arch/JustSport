@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <title>Just Sport Lebanon | Premium Bike Shop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root{--black:#000;--white:#fff;--gray-100:#f5f5f5;--gray-200:#eee;--gray-300:#e0e0e0;--gray-400:#bdbdbd;--gray-500:#9e9e9e;--gray-600:#757575;--shadow-sm:0 1px 2px rgba(0,0,0,0.1);--shadow-md:0 4px 6px rgba(0,0,0,0.1);--shadow-lg:0 10px 25px rgba(0,0,0,0.15);--transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden}
+        
+        /* Navigation */
+        .navbar{position:fixed;top:0;width:100%;background:var(--white);z-index:1000;padding:1rem 0;border-bottom:1px solid var(--gray-200);transition:var(--transition)}
+        .navbar.scrolled{padding:0.75rem 0;box-shadow:var(--shadow-md)}
+        .nav-container{max-width:1400px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+        .logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--black);text-decoration:none;letter-spacing:2px;display:flex;align-items:center;gap:0.75rem}
+        .logo img{height:45px;width:auto;object-fit:contain}
+        .nav-links{display:flex;gap:2rem;list-style:none}
+        .nav-links a{text-decoration:none;color:var(--black);font-weight:600;font-size:0.9rem;position:relative;padding:0.5rem 0;transition:var(--transition);text-transform:uppercase;letter-spacing:0.5px}
+        .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--black);transition:var(--transition)}
+        .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+        .nav-actions{display:flex;align-items:center;gap:1rem}
+        .nav-btn{background:none;border:none;font-size:1.2rem;color:var(--black);cursor:pointer;position:relative;transition:var(--transition);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--gray-300)}
+        .nav-btn:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+        .cart-badge{position:absolute;top:-2px;right:-2px;background:var(--black);color:var(--white);font-size:0.7rem;font-weight:800;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+        
+        /* Desktop Search */
+        .desktop-search{display:flex;align-items:center;gap:0.5rem;background:var(--white);border:1px solid var(--gray-300);padding:0.25rem 0.5rem;transition:var(--transition)}
+        .desktop-search:focus-within{border-color:var(--black)}
+        .desktop-search input{padding:0.5rem 0.75rem;border:none;outline:none;font-size:0.85rem;width:200px;font-family:'Inter',sans-serif}
+        .desktop-search button{padding:0.5rem 1rem;background:var(--black);color:var(--white);border:none;cursor:pointer;font-weight:600;font-size:0.8rem;transition:var(--transition)}
+        .desktop-search button:hover{background:var(--gray-800)}
+        .search-cancel{background:var(--gray-300);color:var(--black);margin-left:0.25rem}
+        .search-cancel:hover{background:var(--gray-400);color:var(--black)}
+        
+        /* Mobile Menu */
+        .mobile-menu{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;transition:var(--transition);background:none;border:none;cursor:pointer}
+        .mobile-menu:hover{background:var(--gray-100)}
+        .mobile-nav-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;opacity:0;visibility:hidden;transition:var(--transition)}
+        .mobile-nav-overlay.active{opacity:1;visibility:visible}
+        .mobile-nav-links{position:fixed;top:0;right:-320px;width:280px;height:100vh;background:var(--black);z-index:1001;transition:0.3s ease-in-out;padding:5rem 2rem 2rem;box-shadow:var(--shadow-lg)}
+        .mobile-nav-links.active{right:0}
+        .mobile-nav-links li{list-style:none;margin-bottom:1.5rem}
+        .mobile-nav-links a{color:var(--white);text-decoration:none;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;padding:0.75rem 0;transition:var(--transition)}
+        .mobile-nav-links a:hover{color:var(--gray-300);transform:translateX(5px)}
+        
+        /* Mobile Search Bar */
+        .mobile-search-wrapper{display:none;width:100%;order:3;margin-top:0.5rem}
+        .mobile-search-container{display:flex;gap:0.5rem;width:100%}
+        .mobile-search-container input{flex:1;padding:0.75rem;border:2px solid var(--gray-300);font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;border-radius:0}
+        .mobile-search-container input:focus{border-color:var(--black)}
+        .mobile-search-container button{padding:0.75rem 1rem;background:var(--black);color:var(--white);border:none;font-weight:700;cursor:pointer;white-space:nowrap}
+        .mobile-search-cancel{background:var(--gray-300);color:var(--black)}
+        .mobile-search-cancel:hover{background:var(--gray-400)}
+        
+        /* Hero Section */
+        .hero{margin-top:80px;min-height:90vh;background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center}
+        .hero-pattern{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.05;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+        .hero-content{max-width:1400px;margin:0 auto;padding:0 2rem;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+        .hero-text h1{font-family:'Bebas Neue',sans-serif;font-size:5rem;color:var(--white);line-height:0.9;margin-bottom:1.5rem;letter-spacing:3px}
+        .hero-text h1 span{display:block;font-size:6rem;opacity:0.8}
+        .hero-text p{color:rgba(255,255,255,0.8);font-size:1.2rem;margin-bottom:2rem;max-width:500px;line-height:1.6}
+        .hero-stats{display:flex;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
+        .stat{text-align:center}
+        .stat-number{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--white);line-height:1}
+        .stat-label{color:rgba(255,255,255,0.6);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px}
+        .hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+        .btn{padding:1rem 2rem;border:none;font-size:0.95rem;font-weight:700;cursor:pointer;transition:var(--transition);text-transform:uppercase;letter-spacing:1px;text-decoration:none;display:inline-flex;align-items:center;gap:0.75rem}
+        .btn-primary{background:var(--white);color:var(--black)}
+        .btn-primary:hover{background:var(--gray-200);transform:translateY(-3px)}
+        .btn-secondary{background:transparent;color:var(--white);border:2px solid var(--white)}
+        .btn-secondary:hover{background:var(--white);color:var(--black)}
+        .hero-visual{position:relative;height:500px}
+        .bike-showcase{position:absolute;width:100%;height:100%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;animation:float 6s ease-in-out infinite;border:1px solid rgba(255,255,255,0.1);border-radius:50%;overflow:hidden;padding:2rem}
+        .bike-showcase img{max-width:80%;max-height:80%;object-fit:contain;transition:var(--transition)}
+        .bike-showcase:hover img{transform:scale(1.05)}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+        .feature-pill{position:absolute;background:var(--white);padding:0.8rem 1.2rem;color:var(--black);font-weight:600;animation:floatPill 3s ease-in-out infinite;font-size:0.85rem;white-space:nowrap;border-radius:0;box-shadow:var(--shadow-md)}
+        .feature-pill:nth-child(2){top:10%;right:-20px;animation-delay:0.5s}
+        .feature-pill:nth-child(3){bottom:20%;left:-20px;animation-delay:1s}
+        @keyframes floatPill{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        
+        /* Categories */
+        .categories-section{padding:3rem 0;background:var(--white);border-bottom:1px solid var(--gray-200)}
+        .categories-container{max-width:1400px;margin:0 auto;padding:0 2rem}
+        .category-scroll{display:flex;gap:0.8rem;overflow-x:auto;padding-bottom:1rem;scrollbar-width:thin}
+        .category-scroll::-webkit-scrollbar{height:4px}
+        .category-pill{flex-shrink:0;padding:0.8rem 1.5rem;background:var(--white);border:2px solid var(--black);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:0.75rem;font-weight:600;color:var(--black);text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px}
+        .category-pill:hover,.category-pill.active{background:var(--black);color:var(--white)}
+        
+        /* Filter Bar */
+        .filter-bar{padding:1rem 0;background:var(--gray-100);border-bottom:1px solid var(--gray-200)}
+        .filter-container{max-width:1400px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+        .filter-group{display:flex;align-items:center;gap:1rem}
+        .filter-label{font-weight:700;color:var(--black);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px}
+        .filter-select{padding:0.6rem 1.2rem;border:2px solid var(--black);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:0.85rem}
+        
+        /* Products Grid */
+        .products-section{max-width:1400px;margin:0 auto;padding:3rem 2rem}
+        .section-header{text-align:center;margin-bottom:3rem}
+        .section-header h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--black);margin-bottom:0.5rem;letter-spacing:2px}
+        .section-header p{color:var(--gray-600);font-size:1.1rem}
+        .bestseller-badge{background:var(--black);color:var(--white);padding:0.25rem 0.75rem;font-size:0.7rem;margin-left:0.5rem;border-radius:0}
+        .search-results-header{margin-bottom:2rem;padding:1rem;background:var(--gray-100);border-left:4px solid var(--black);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+        .search-results-header h3{font-size:1.2rem;color:var(--black);margin-bottom:0.25rem}
+        .search-results-header p{color:var(--gray-600);font-size:0.9rem}
+        .clear-search-btn{padding:0.5rem 1rem;background:var(--black);color:var(--white);border:none;cursor:pointer;font-weight:600;transition:var(--transition)}
+        .clear-search-btn:hover{background:var(--gray-800)}
+        .products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:3rem}
+        .product-card{background:var(--white);border:1px solid var(--gray-300);transition:var(--transition);position:relative}
+        .product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--black)}
+        .product-badge{position:absolute;top:1rem;left:1rem;padding:0.5rem 1rem;background:var(--black);color:var(--white);font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;z-index:10}
+        .product-image{height:280px;background:var(--gray-100);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+        .product-image i{font-size:5rem;color:var(--gray-400);transition:var(--transition)}
+        .product-card:hover .product-image i{color:var(--black);transform:scale(1.1)}
+        .product-actions{position:absolute;right:-60px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:0.75rem;transition:var(--transition)}
+        .product-card:hover .product-actions{right:1rem}
+        .action-btn{width:44px;height:44px;border:1px solid var(--black);background:var(--white);color:var(--black);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);font-size:1rem}
+        .action-btn:hover{background:var(--black);color:var(--white)}
+        .product-info{padding:1.25rem;border-top:1px solid var(--gray-200)}
+        .product-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+        .product-category{font-size:0.7rem;color:var(--gray-600);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+        .product-rating{display:flex;align-items:center;gap:0.25rem;color:var(--black);font-size:0.85rem}
+        .product-name{font-size:1.1rem;font-weight:700;color:var(--black);margin-bottom:0.75rem;line-height:1.3}
+        .product-specs{display:flex;gap:1rem;margin-bottom:1rem;font-size:0.75rem;color:var(--gray-600);flex-wrap:wrap}
+        .spec{display:flex;align-items:center;gap:0.4rem}
+        .product-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--gray-200)}
+        .product-price{display:flex;flex-direction:column}
+        .current-price{font-size:1.3rem;font-weight:800;color:var(--black)}
+        .original-price{font-size:0.8rem;color:var(--gray-500);text-decoration:line-through}
+        .add-to-cart{padding:0.6rem 1.2rem;background:var(--black);color:var(--white);border:none;font-weight:700;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:0.5rem;text-transform:uppercase;font-size:0.75rem;letter-spacing:0.5px}
+        .add-to-cart:hover{background:var(--gray-800)}
+        .load-more-container{text-align:center;margin-top:2rem}
+        .load-more-btn{padding:1rem 3rem;background:transparent;color:var(--black);border:2px solid var(--black);font-weight:700;cursor:pointer;transition:var(--transition);text-transform:uppercase;letter-spacing:1px;font-size:0.9rem}
+        .load-more-btn:hover{background:var(--black);color:var(--white)}
+        .load-more-btn.hidden{display:none}
+        .no-results{text-align:center;padding:4rem;color:var(--gray-600)}
+        .no-results i{font-size:4rem;margin-bottom:1rem;opacity:0.3}
+        .no-results h3{font-size:1.5rem;margin-bottom:0.5rem;color:var(--black)}
+        
+        /* About Section */
+        .about-section{padding:5rem 2rem;background:var(--white);border-top:1px solid var(--gray-200)}
+        .about-container{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+        .about-image-placeholder{background:var(--gray-100);width:100%;height:400px;display:flex;align-items:center;justify-content:center}
+        .about-image-placeholder i{font-size:8rem;color:var(--gray-400)}
+        .about-content h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--black);margin-bottom:1rem;letter-spacing:2px}
+        .about-content h2 span{color:var(--gray-600);font-size:1rem;font-family:'Inter';letter-spacing:normal}
+        .about-content p{color:var(--gray-600);line-height:1.8;margin-bottom:1.5rem}
+        .about-features{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:2rem}
+        .about-feature{display:flex;align-items:center;gap:1rem}
+        .about-feature i{font-size:2rem;color:var(--black);width:50px;height:50px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gray-300)}
+        .about-feature h4{font-weight:700;margin-bottom:0.25rem}
+        .about-feature p{font-size:0.85rem;margin:0}
+        
+        /* Testimonials */
+        .testimonials-section{padding:5rem 2rem;background:var(--gray-100);border-top:1px solid var(--gray-200)}
+        .testimonials-container{max-width:1400px;margin:0 auto}
+        .testimonials-scroll{overflow-x:auto;padding-bottom:1rem;scroll-snap-type:x mandatory;display:flex;gap:2rem;scrollbar-width:thin}
+        .testimonial-card{flex:0 0 350px;scroll-snap-align:start;background:var(--white);padding:2rem;border:1px solid var(--gray-200);transition:var(--transition)}
+        .testimonial-card:hover{transform:translateY(-5px);border-color:var(--black)}
+        .testimonial-stars{color:#ffc107;margin-bottom:1rem}
+        .testimonial-text{color:var(--gray-600);line-height:1.6;margin-bottom:1.5rem;font-style:italic}
+        .testimonial-author{display:flex;align-items:center;gap:1rem}
+        .testimonial-avatar{width:50px;height:50px;background:var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white)}
+        
+        /* Cart Sidebar - Improved Design */
+        .cart-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1500;opacity:0;visibility:hidden;transition:var(--transition)}
+        .cart-overlay.active{opacity:1;visibility:visible}
+        .cart-sidebar{position:fixed;top:0;right:-500px;width:450px;max-width:100%;height:100%;background:var(--white);z-index:1600;transition:var(--transition);display:flex;flex-direction:column;box-shadow:var(--shadow-xl)}
+        .cart-sidebar.active{right:0}
+        .cart-header{padding:1.5rem;border-bottom:2px solid var(--black);display:flex;justify-content:space-between;align-items:center;background:var(--black);color:var(--white)}
+        .cart-header h3{font-size:1.5rem;display:flex;align-items:center;gap:0.75rem;font-family:'Bebas Neue',sans-serif}
+        .cart-close{background:var(--white);border:none;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--black);font-size:1.2rem;transition:var(--transition);border-radius:50%}
+        .cart-close:hover{background:var(--gray-200)}
+        .cart-items{flex:1;overflow-y:auto;padding:1rem}
+        .cart-empty{text-align:center;padding:3rem 1rem}
+        .cart-empty i{font-size:4rem;margin-bottom:1rem;opacity:0.2;color:var(--black)}
+        .cart-empty h3{font-size:1.3rem;margin-bottom:0.5rem;color:var(--black)}
+        .cart-empty p{color:var(--gray-500)}
+        .cart-item{display:flex;gap:1rem;padding:1rem;background:var(--gray-100);margin-bottom:0.75rem;border:1px solid var(--gray-200);transition:var(--transition);border-radius:8px}
+        .cart-item:hover{border-color:var(--black);transform:translateX(-3px)}
+        .cart-item-image{width:80px;height:80px;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;border:1px solid var(--gray-300);border-radius:8px}
+        .cart-item-details{flex:1}
+        .cart-item-name{font-weight:700;font-size:1rem;margin-bottom:0.25rem;color:var(--black)}
+        .cart-item-price{font-weight:800;font-size:1.1rem;color:var(--black);margin-bottom:0.5rem}
+        .cart-item-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap}
+        .quantity-control{display:flex;align-items:center;gap:0.5rem;background:var(--white);padding:0.25rem;border:1px solid var(--gray-300);border-radius:4px}
+        .qty-btn{width:28px;height:28px;border:none;background:var(--gray-100);cursor:pointer;font-weight:700;transition:var(--transition);border-radius:4px}
+        .qty-btn:hover{background:var(--black);color:var(--white)}
+        .qty-value{font-weight:700;min-width:25px;text-align:center}
+        .remove-item{color:var(--gray-500);cursor:pointer;transition:var(--transition);padding:0.25rem}
+        .remove-item:hover{color:var(--danger)}
+        .cart-footer{padding:1.5rem;border-top:2px solid var(--black);background:var(--gray-100)}
+        .cart-summary{background:var(--white);padding:1rem;border:1px solid var(--gray-300);border-radius:8px;margin-bottom:1rem}
+        .summary-row{display:flex;justify-content:space-between;margin-bottom:0.75rem;font-size:0.95rem}
+        .summary-row.total{font-size:1.3rem;font-weight:800;color:var(--black);padding-top:0.75rem;border-top:2px solid var(--black);margin-top:0.5rem;margin-bottom:0}
+        .checkout-btn{width:100%;padding:1rem;background:var(--black);color:var(--white);border:none;font-weight:800;cursor:pointer;transition:var(--transition);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:0.5rem;border-radius:8px}
+        .checkout-btn:hover{background:var(--gray-800);transform:translateY(-2px)}
+        
+        /* Footer */
+        .footer{background:var(--black);color:var(--white);padding:3rem 0 1.5rem;margin-top:4rem}
+        .footer-content{max-width:1400px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+        .footer-section h4{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;margin-bottom:1rem}
+        .footer-section ul{list-style:none}
+        .footer-section li{margin-bottom:0.5rem;font-size:0.85rem}
+        .footer-section a{color:rgba(255,255,255,0.7);text-decoration:none}
+        .footer-section a:hover{color:var(--white)}
+        .footer-bottom{margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.2);text-align:center;font-size:0.75rem}
+        
+        /* Toast */
+        .toast-container{position:fixed;bottom:1rem;right:1rem;z-index:4000;display:flex;flex-direction:column;gap:0.5rem}
+        .toast{background:var(--black);color:var(--white);padding:0.8rem 1.2rem;display:flex;align-items:center;gap:0.75rem;transform:translateX(500px);transition:var(--transition);border-left:3px solid var(--white);border-radius:8px}
+        .toast.show{transform:translateX(0)}
+        
+        /* Loading */
+        .loading-state{text-align:center;padding:3rem}
+        .loading-spinner{width:40px;height:40px;border:3px solid var(--gray-300);border-top-color:var(--black);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
+        
+        /* Responsive */
+        @media (max-width: 1200px) {.products-grid{grid-template-columns:repeat(3,1fr)}}
+        @media (max-width: 992px) {.products-grid{grid-template-columns:repeat(2,1fr)}.about-container{grid-template-columns:1fr}.footer-content{grid-template-columns:repeat(2,1fr)}}
+        @media (max-width: 768px) {
+            .products-grid{grid-template-columns:1fr}
+            .hero-content{grid-template-columns:1fr;text-align:center}
+            .hero-visual{display:none}
+            .nav-links{display:none}
+            .mobile-menu{display:flex}
+            .desktop-search{display:none}
+            .mobile-search-wrapper{display:block}
+            .filter-container{flex-direction:column;align-items:stretch}
+            .quickview-body{grid-template-columns:1fr}
+            .about-features{grid-template-columns:1fr}
+            .testimonial-card{flex:0 0 280px}
+            .footer-content{grid-template-columns:1fr}
+            .hero-text h1{font-size:2.5rem}
+            .hero-text h1 span{font-size:3rem}
+            .nav-container{padding:0 1rem}
+            .logo img{height:35px}
+            .logo{font-size:1.2rem}
+            .cart-sidebar{width:100%}
+        }
+        @media (min-width: 769px) {.desktop-search{display:flex}}
+        
+        button, .category-pill, .add-to-cart, .action-btn, .qty-btn, .checkout-btn, .load-more-btn, .nav-btn, .mobile-menu {min-height: 44px;-webkit-tap-highlight-color: transparent}
+        select, button, .btn {font-size: 16px}
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-nav-links" id="mobileNavLinks">
+        <li><a href="#" onclick="closeMobileMenu(); clearSearchAndShowAll()"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#products" onclick="closeMobileMenu(); clearSearchAndShowAll()"><i class="fas fa-bicycle"></i> Bikes</a></li>
+        <li><a href="#categories" onclick="closeMobileMenu()"><i class="fas fa-tags"></i> Categories</a></li>
+        <li><a href="#about" onclick="closeMobileMenu()"><i class="fas fa-info-circle"></i> About</a></li>
+        <li><a href="#testimonials" onclick="closeMobileMenu()"><i class="fas fa-star"></i> Reviews</a></li>
+        <li><a href="admin.html" onclick="closeMobileMenu()"><i class="fas fa-cog"></i> Admin</a></li>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="clearSearchAndShowAll(); return false">
+                <img src="https://i.ibb.co/fdSTzVz1/472313309-1164462591964696-1636281038196464108-n.jpg" alt="Just Sport Lebanon Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27black%27%3E%3Cpath d=%27M5.5 18.5L3 16L5.5 13.5L8 16L5.5 18.5ZM18 3L15.5 5.5L13 3L15.5 0.5L18 3ZM12 7L7 12L12 17L17 12L12 7ZM4 20L8 16L4 12L0 16L4 20Z%27/%3E%3C/svg%3E'">
+                JUST SPORT
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="clearSearchAndShowAll(); return false">Home</a></li>
+                <li><a href="#products" onclick="clearSearchAndShowAll(); return false">Bikes</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="desktop-search">
+                    <input type="text" id="desktopSearchInput" placeholder="Search bikes..." onkeypress="if(event.key==='Enter') performSearch()">
+                    <button onclick="performSearch()"><i class="fas fa-search"></i> Search</button>
+                    <button id="desktopCancelBtn" class="search-cancel" onclick="clearSearchAndShowAll()" style="display:none"><i class="fas fa-times"></i> Cancel</button>
+                </div>
+                <button class="nav-btn" onclick="toggleCart()" title="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+                <div class="mobile-search-container">
+                    <input type="text" id="mobileSearchInput" placeholder="Search bikes..." onkeypress="if(event.key==='Enter') performSearch()">
+                    <button onclick="performSearch()"><i class="fas fa-search"></i> Search</button>
+                    <button id="mobileCancelBtn" class="mobile-search-cancel" onclick="clearSearchAndShowAll()" style="display:none"><i class="fas fa-times"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>RIDE THE <span>EXTRAORDINARY</span></h1>
+                <p>Lebanon's premier destination for premium bicycles. From mountain trails to city streets, we've got your perfect ride.</p>
+                <div class="hero-stats">
+                    <div class="stat"><div class="stat-number" id="stat-bikes">0</div><div class="stat-label">Bikes in Stock</div></div>
+                    <div class="stat"><div class="stat-number">15+</div><div class="stat-label">Premium Brands</div></div>
+                    <div class="stat"><div class="stat-number">24h</div><div class="stat-label">Fast Delivery</div></div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#products" class="btn btn-primary" onclick="clearSearchAndShowAll(); return false"><i class="fas fa-fire"></i> Shop Bikes</a>
+                    <a href="#about" class="btn btn-secondary"><i class="fas fa-info-circle"></i> Our Story</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="bike-showcase">
+                    <img src="https://i.ibb.co/fdSTzVz1/472313309-1164462591964696-1636281038196464108-n.jpg" alt="Just Sport Logo">
+                </div>
+                <div class="feature-pill"><i class="fas fa-shipping-fast"></i> Free Delivery in Beirut</div>
+                <div class="feature-pill"><i class="fas fa-shield-alt"></i> 2 Year Warranty</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section" id="categories">
+        <div class="categories-container">
+            <div class="category-scroll">
+                <button class="category-pill active" onclick="filterCategory('all')"><i class="fas fa-th-large"></i> All</button>
+                <button class="category-pill" onclick="filterCategory('mountain')"><i class="fas fa-mountain"></i> Mountain</button>
+                <button class="category-pill" onclick="filterCategory('city')"><i class="fas fa-city"></i> City</button>
+                <button class="category-pill" onclick="filterCategory('road')"><i class="fas fa-road"></i> Road</button>
+                <button class="category-pill" onclick="filterCategory('hybrid')"><i class="fas fa-random"></i> Hybrid</button>
+                <button class="category-pill" onclick="filterCategory('gravel')"><i class="fas fa-route"></i> Gravel</button>
+                <button class="category-pill" onclick="filterCategory('kids')"><i class="fas fa-child"></i> Kids</button>
+                <button class="category-pill" onclick="filterCategory('bmx')"><i class="fas fa-cog"></i> BMX</button>
+                <button class="category-pill" onclick="filterCategory('parts')"><i class="fas fa-cogs"></i> Parts</button>
+                <button class="category-pill" onclick="filterCategory('apparel')"><i class="fas fa-tshirt"></i> Apparel</button>
+                <button class="category-pill" onclick="filterCategory('accessories')"><i class="fas fa-toolbox"></i> Accessories</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-container">
+            <div class="filter-group"><span class="filter-label">Sort by:</span><select class="filter-select" id="sortSelect" onchange="sortProducts(this.value)"><option value="featured">Featured</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option><option value="newest">Newest Arrivals</option><option value="rating">Top Rated</option></select></div>
+            <div class="filter-group"><span class="filter-label">Price Range:</span><select class="filter-select" id="priceSelect" onchange="filterPrice(this.value)"><option value="all">All Prices</option><option value="0-500">Under $500</option><option value="500-1000">$500 - $1,000</option><option value="1000-2000">$1,000 - $2,000</option><option value="2000+">$2,000+</option></select></div>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="section-header">
+            <h2>PREMIUM BICYCLES <span class="bestseller-badge"><i class="fas fa-fire"></i> Bestsellers First</span></h2>
+            <p>Professional grade bikes for every terrain and rider</p>
+        </div>
+        <div id="loadingState" class="loading-state"><div class="loading-spinner"></div><p>Loading premium bikes...</p></div>
+        <div id="searchResultsHeader" style="display:none;" class="search-results-header"></div>
+        <div class="products-grid" id="productsGrid" style="display:none;"></div>
+        <div id="noResultsMessage" style="display:none;" class="no-results"><i class="fas fa-search"></i><h3>No products found</h3><p>Try searching with different keywords</p></div>
+        <div class="load-more-container" id="loadMoreContainer" style="display:none;"><button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Load More <i class="fas fa-chevron-down"></i></button></div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-image-placeholder"><i class="fas fa-bicycle"></i></div>
+            <div class="about-content">
+                <h2>ABOUT JUST SPORT <span>— Est. 2020</span></h2>
+                <p>Just Sport Lebanon was born from a passion for cycling and a vision to bring world-class bicycles to the Lebanese community. We believe that every ride tells a story, and we're here to help you write yours.</p>
+                <p>From professional mountain bikes to stylish city cruisers, we curate only the finest bicycles from top global brands. Our team of cycling enthusiasts ensures every bike meets our rigorous standards for quality and performance.</p>
+                <div class="about-features">
+                    <div class="about-feature"><i class="fas fa-tools"></i><div><h4>Expert Service</h4><p>Professional maintenance & repair</p></div></div>
+                    <div class="about-feature"><i class="fas fa-truck-fast"></i><div><h4>Fast Delivery</h4><p>Free shipping across Lebanon</p></div></div>
+                    <div class="about-feature"><i class="fas fa-handshake"></i><div><h4>Trusted Since 2020</h4><p>1000+ happy customers</p></div></div>
+                    <div class="about-feature"><i class="fas fa-award"></i><div><h4>Premium Quality</h4><p>Top brands guaranteed</p></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="testimonials-container">
+            <div class="section-header"><h2>RIDER REVIEWS</h2><p>What our customers say about their experience</p></div>
+            <div class="testimonials-scroll">
+                <div class="testimonial-card"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="testimonial-text">"Absolutely love my new mountain bike! The team was incredibly helpful. Delivery was super fast too!"</p><div class="testimonial-author"><div class="testimonial-avatar"><i class="fas fa-user"></i></div><div><h4>Mike Khoury</h4><p>Mountain Rider</p></div></div></div>
+                <div class="testimonial-card"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="testimonial-text">"Best bike shop in Lebanon! Great selection, fair prices, and amazing customer service."</p><div class="testimonial-author"><div class="testimonial-avatar"><i class="fas fa-user"></i></div><div><h4>Sarah Haddad</h4><p>City Commuter</p></div></div></div>
+                <div class="testimonial-card"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="testimonial-text">"Professional staff who really know their bikes. Helped me choose the perfect road bike!"</p><div class="testimonial-author"><div class="testimonial-avatar"><i class="fas fa-user"></i></div><div><h4>Tony Abi Nader</h4><p>Road Cyclist</p></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section"><h4>Shop</h4><ul><li><a href="#">Mountain Bikes</a></li><li><a href="#">Road Bikes</a></li><li><a href="#">City Bikes</a></li><li><a href="#">Kids Bikes</a></li></ul></div>
+            <div class="footer-section"><h4>Support</h4><ul><li><a href="#">Bike Service</a></li><li><a href="#">Warranty</a></li><li><a href="#">Returns</a></li><li><a href="#">Size Guide</a></li></ul></div>
+            <div class="footer-section"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Store Location</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+            <div class="footer-section"><h4>Contact</h4><ul><li><i class="fas fa-map-marker-alt"></i> Ain Al Rommanah</li><li><i class="fas fa-phone"></i> +961 70 225 928</li><li><i class="fas fa-envelope"></i> info@justsportlb.com</li><li><i class="fas fa-clock"></i> Mon-Sat: 9AM - 7PM</li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 Just Sport Lebanon. All rights reserved.</p></div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><h3><i class="fas fa-shopping-cart"></i> Your Cart</h3><button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button></div>
+        <div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fas fa-shopping-basket"></i><h3>Your cart is empty</h3><p>Add some bikes to get rolling!</p></div></div>
+        <div class="cart-footer" id="cartFooter" style="display: none;"><div class="cart-summary"><div class="summary-row"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div><div class="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div><div class="summary-row total"><span>Total</span><span id="cartTotal">$0.00</span></div></div><button class="checkout-btn" onclick="goToCheckout()"><i class="fas fa-lock"></i> Proceed to Checkout</button></div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="quickViewModal"><div class="quickview-modal"><div class="quickview-header"><h3>Quick View</h3><button class="quickview-close" onclick="closeQuickView()"><i class="fas fa-times"></i></button></div><div class="quickview-body" id="quickviewBody"></div></div></div>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const base = 'https://api.justsport-lb.store';
+        const sessionId = localStorage.getItem('cartSessionId') || (() => { const id = 'sess_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('cartSessionId', id); return id; })();
+
+        const api = {
+            getProducts: async () => { const res = await fetch(`${base}/api/products?limit=100`); if (!res.ok) throw new Error(); return res.json(); },
+            getCart: async () => { const res = await fetch(`${base}/api/cart/${sessionId}`); if (!res.ok) return { items: [] }; return res.json(); },
+            saveCart: async (items) => { const res = await fetch(`${base}/api/cart/${sessionId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) }); return res.json(); }
+        };
+
+        let allProducts = [], filteredProducts = [], cart = [], currentFilter = 'all', currentPriceFilter = 'all', displayedCount = 8, currentSort = 'featured', isSearchMode = false, currentSearchTerm = '';
+
+        function toggleMobileMenu() { document.getElementById('mobileNavLinks').classList.toggle('active'); document.getElementById('mobileNavOverlay').classList.toggle('active'); document.body.style.overflow = document.getElementById('mobileNavLinks').classList.contains('active') ? 'hidden' : 'auto'; }
+        function closeMobileMenu() { document.getElementById('mobileNavLinks').classList.remove('active'); document.getElementById('mobileNavOverlay').classList.remove('active'); document.body.style.overflow = 'auto'; }
+
+        function clearSearchAndShowAll() {
+            isSearchMode = false;
+            currentSearchTerm = '';
+            document.getElementById('desktopSearchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            document.getElementById('desktopCancelBtn').style.display = 'none';
+            document.getElementById('mobileCancelBtn').style.display = 'none';
+            document.getElementById('searchResultsHeader').style.display = 'none';
+            displayedCount = 8;
+            applyFilters();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function performSearch() {
+            const searchTerm = window.innerWidth <= 768 ? document.getElementById('mobileSearchInput').value.trim() : document.getElementById('desktopSearchInput').value.trim();
+            if (!searchTerm) { showToast('Please enter a search term', 'error'); return; }
+            isSearchMode = true;
+            currentSearchTerm = searchTerm.toLowerCase();
+            displayedCount = 8;
+            document.getElementById('desktopCancelBtn').style.display = 'flex';
+            document.getElementById('mobileCancelBtn').style.display = 'flex';
+            applyFilters();
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => { await loadProducts(); await loadCart(); window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if (window.scrollY > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); }); });
+
+        async function loadProducts() { try { document.getElementById('loadingState').style.display = 'block'; const data = await api.getProducts(); allProducts = data.products; document.getElementById('stat-bikes').textContent = allProducts.length; applyFilters(); document.getElementById('loadingState').style.display = 'none'; document.getElementById('productsGrid').style.display = 'grid'; } catch (err) { console.error(err); showToast('Failed to load products', 'error'); } }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid'); const noResults = document.getElementById('noResultsMessage'); const loadMoreContainer = document.getElementById('loadMoreContainer'); const toShow = filteredProducts.slice(0, displayedCount);
+            if (filteredProducts.length === 0) { grid.style.display = 'none'; noResults.style.display = 'block'; loadMoreContainer.style.display = 'none'; return; }
+            grid.style.display = 'grid'; noResults.style.display = 'none';
+            grid.innerHTML = toShow.map(product => { const specs = Object.entries(product.specs || {}).slice(0, 2).map(([key, val]) => `<span class="spec"><i class="fas fa-check"></i> ${val}</span>`).join(''); return `<div class="product-card">${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}<div class="product-image"><i class="fas ${product.icon || 'fa-bicycle'}"></i><div class="product-actions"><button class="action-btn" onclick="quickView(${product.id})"><i class="fas fa-eye"></i></button></div></div><div class="product-info"><div class="product-meta"><span class="product-category">${product.subcategory || product.category}</span><div class="product-rating"><i class="fas fa-star"></i> ${product.rating || 0}</div></div><h3 class="product-name">${product.name}</h3><div class="product-specs">${specs}</div><div class="product-footer"><div class="product-price"><span class="current-price">$${product.price}</span>${product.original_price ? `<span class="original-price">$${product.original_price}</span>` : ''}</div><button class="add-to-cart" onclick="addToCart(${product.id})"><i class="fas fa-plus"></i> Add</button></div></div></div>`; }).join('');
+            if (displayedCount >= filteredProducts.length) loadMoreContainer.style.display = 'none'; else loadMoreContainer.style.display = 'block';
+        }
+
+        function applyFilters() {
+            let results = [...allProducts];
+            if (isSearchMode && currentSearchTerm) { results = results.filter(p => p.name.toLowerCase().includes(currentSearchTerm) || p.category.toLowerCase().includes(currentSearchTerm)); const header = document.getElementById('searchResultsHeader'); header.style.display = 'block'; header.innerHTML = `<div><h3><i class="fas fa-search"></i> Search results for: "${currentSearchTerm}"</h3><p>Found ${results.length} product${results.length !== 1 ? 's' : ''}</p></div><button class="clear-search-btn" onclick="clearSearchAndShowAll()"><i class="fas fa-times"></i> Clear Search</button>`; } else { document.getElementById('searchResultsHeader').style.display = 'none'; }
+            if (currentFilter !== 'all') results = results.filter(p => p.category === currentFilter);
+            if (currentPriceFilter !== 'all') { if (currentPriceFilter === '2000+') results = results.filter(p => p.price >= 2000); else { const [min, max] = currentPriceFilter.split('-').map(Number); results = results.filter(p => p.price >= min && p.price <= max); } }
+            
+            // Sort bestsellers first (products with badge 'bestseller' or high rating)
+            results.sort((a, b) => {
+                if (a.badge === 'bestseller' && b.badge !== 'bestseller') return -1;
+                if (a.badge !== 'bestseller' && b.badge === 'bestseller') return 1;
+                return b.rating - a.rating;
+            });
+            
+            switch(currentSort) { 
+                case 'price-asc': results.sort((a, b) => a.price - b.price); break;
+                case 'price-desc': results.sort((a, b) => b.price - a.price); break;
+                case 'rating': results.sort((a, b) => b.rating - a.rating); break;
+                case 'newest': results.sort((a, b) => b.id - a.id); break;
+                default: break;
+            }
+            filteredProducts = results; renderProducts();
+        }
+
+        function loadMore() { displayedCount += 8; renderProducts(); }
+        function filterCategory(category) { currentFilter = category; displayedCount = 8; document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active')); event.target.classList.add('active'); applyFilters(); }
+        function filterPrice(range) { currentPriceFilter = range; displayedCount = 8; applyFilters(); }
+        function sortProducts(sortBy) { currentSort = sortBy; displayedCount = 8; applyFilters(); }
+
+        async function quickView(productId) { const product = allProducts.find(p => p.id === productId); if (!product) return; const rating = product.rating || 0; const stars = '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating)); const specsHTML = product.specs ? Object.entries(product.specs).map(([key, val]) => `<div class="spec-item"><strong>${key}:</strong> ${val}</div>`).join('') : 'No specifications'; document.getElementById('quickviewBody').innerHTML = `<div class="quickview-image"><i class="fas ${product.icon || 'fa-bicycle'}"></i></div><div class="quickview-details"><h2>${product.name}</h2><div class="quickview-rating">${stars} (${product.reviews || 0} reviews)</div><div class="quickview-price">$${product.price}${product.original_price ? ` <del>$${product.original_price}</del>` : ''}</div><p>Experience the ultimate ride with this premium bicycle.</p><div class="quickview-specs"><strong>Specifications:</strong><br>${specsHTML}</div><div class="quickview-actions"><button class="quickview-add-btn" onclick="addToCart(${product.id}); closeQuickView()">Add to Cart</button></div></div>`; document.getElementById('quickViewModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeQuickView() { document.getElementById('quickViewModal').classList.remove('active'); document.body.style.overflow = 'auto'; }
+
+        async function loadCart() { try { const data = await api.getCart(); cart = data.items || []; updateCartUI(); } catch (err) { console.error(err); } }
+        async function addToCart(productId) { const product = allProducts.find(p => p.id === productId); if (!product) return; const existing = cart.find(item => item.id === productId); if (existing) existing.quantity++; else cart.push({ id: product.id, name: product.name, price: product.price, icon: product.icon, quantity: 1 }); await api.saveCart(cart); updateCartUI(); showToast(`${product.name} added to cart!`, 'success'); }
+        async function updateQuantity(productId, change) { const item = cart.find(item => item.id === productId); if (item) { item.quantity += change; if (item.quantity <= 0) cart = cart.filter(item => item.id !== productId); await api.saveCart(cart); updateCartUI(); } }
+        async function removeFromCart(productId) { cart = cart.filter(item => item.id !== productId); await api.saveCart(cart); updateCartUI(); showToast('Item removed', 'success'); }
+        
+        function updateCartUI() { 
+            const totalItems = cart.reduce((s, i) => s + i.quantity, 0); 
+            document.getElementById('cartCount').textContent = totalItems; 
+            const container = document.getElementById('cartItems'); 
+            if (cart.length === 0) { 
+                container.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-basket"></i><h3>Your cart is empty</h3><p>Add some bikes to get rolling!</p></div>'; 
+                document.getElementById('cartFooter').style.display = 'none'; 
+            } else { 
+                container.innerHTML = cart.map(item => `<div class="cart-item"><div class="cart-item-image"><i class="fas ${item.icon || 'fa-bicycle'}"></i></div><div class="cart-item-details"><div class="cart-item-name">${item.name}</div><div class="cart-item-price">$${item.price}</div><div class="cart-item-actions"><div class="quantity-control"><button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button><span class="qty-value">${item.quantity}</span><button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button></div><i class="fas fa-trash remove-item" onclick="removeFromCart(${item.id})"></i></div></div></div>`).join(''); 
+                document.getElementById('cartFooter').style.display = 'block'; 
+            } 
+            const subtotal = cart.reduce((s, i) => s + (i.price * i.quantity), 0); 
+            document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`; 
+            document.getElementById('cartTotal').textContent = `$${subtotal.toFixed(2)}`; 
+        }
+        
+        function toggleCart() { document.getElementById('cartOverlay').classList.toggle('active'); document.getElementById('cartSidebar').classList.toggle('active'); closeMobileMenu(); }
+        function goToCheckout() { if (cart.length === 0) { showToast('Your cart is empty!', 'error'); return; } window.location.href = 'checkout.html'; }
+        function showToast(msg, type) { const container = document.getElementById('toastContainer'); const toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i><span>${msg}</span>`; container.appendChild(toast); setTimeout(() => toast.classList.add('show'), 100); setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000); }
+        
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeQuickView(); closeMobileMenu(); document.getElementById('cartOverlay').classList.remove('active'); document.getElementById('cartSidebar').classList.remove('active'); } });
+        document.getElementById('quickViewModal').addEventListener('click', (e) => { if (e.target === document.getElementById('quickViewModal')) closeQuickView(); });
+    </script>
+</body>
+</html>
